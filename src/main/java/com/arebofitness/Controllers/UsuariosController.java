@@ -48,7 +48,7 @@ public class UsuariosController {
     
     
     @GetMapping("/")
-    public ResponseEntity<List<AllUsuariosDTO>> getAllUsers() {
+    public ResponseEntity<List<AllUsuariosDTO>> getAllMembers() {
         try {
             List<AllUsuariosDTO> usuarios = allUsrRep.findAll();
             return new ResponseEntity<>(usuarios, HttpStatus.OK);
@@ -69,7 +69,7 @@ public class UsuariosController {
     }
     
     @PostMapping("/test/")
-    public ResponseEntity<Usuario> addUserIds(@RequestBody Usuario user, 
+    public ResponseEntity<Usuario> addUser(@RequestBody Usuario user, 
             @RequestParam int id_tipo,@RequestParam int id_plan) {
         try {
             Optional<TipoUsuario> opctpUsr=tpUsrRep.findById(id_tipo);
@@ -96,17 +96,22 @@ public class UsuariosController {
         //return null;
     }
     
-    @PostMapping("/")
-    public ResponseEntity<Usuario> addUser(@RequestBody Usuario user) {
+    @PostMapping("/empleado/")
+    public ResponseEntity<Usuario> addEmployee(@RequestBody Usuario user, 
+            @RequestParam int id_tipo) {
         try {
-            if (user != null) {
+            Optional<TipoUsuario> opctpUsr=tpUsrRep.findById(id_tipo);
+            //Optional<HorarioRepository> opctpUsr=tpUsrRep.findById(id_plan);
+            if (user != null&&!opctpUsr.isEmpty()) {
                 Usuario usr = usrRep.save(new Usuario(
                         user.getNombres(),
                         user.getApellidos(),
                         user.getEdad(),
                         user.getTelefono(),
                         user.getCorreo(),
-                        user.getFoto_perfil()
+                        user.getFoto_perfil(),
+                        opctpUsr.get()
+                        
                 ));
                 return new ResponseEntity<>(usr, HttpStatus.CREATED);
             }
@@ -114,6 +119,7 @@ public class UsuariosController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        //return null;
     }
     
     @PutMapping("/")

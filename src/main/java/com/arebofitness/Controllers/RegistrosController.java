@@ -11,9 +11,7 @@ import com.arebofitness.Repositories.AllRegistrosRepository;
 import com.arebofitness.Repositories.RegistroEntradaRepository;
 import com.arebofitness.Repositories.UsuarioRepository;
 import java.sql.Time;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -51,8 +49,8 @@ public class RegistrosController {
         }
     }
     
-    @PostMapping("/")
-    public ResponseEntity<HttpStatus> addRegistro(@RequestParam int id_usuario) {
+    @PostMapping("/entrada/")
+    public ResponseEntity<RegistroEntrada> addRegistro(@RequestParam int id_usuario) {
         try {
             Optional<Usuario> opcUsr=usrRep.findById(id_usuario);
             if (!opcUsr.isEmpty()) {
@@ -60,12 +58,30 @@ public class RegistrosController {
                 Date date=new Date();
                 Time hora = Time.valueOf(horaActual);
                 java.sql.Date fecha = new java.sql.Date(date.getTime());
-                regEntRep.save(new RegistroEntrada(
+                RegistroEntrada registro=regEntRep.save(new RegistroEntrada(
                         hora,
                         fecha,
                         opcUsr.get()
                 ));
-               return new ResponseEntity<>(null, HttpStatus.OK);
+               return new ResponseEntity<>(registro, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+    }
+    
+    
+    @PostMapping("/salida/")
+    public ResponseEntity<RegistroEntrada> addRegistroSalida(@RequestParam int id_registro) {
+        try {
+            Optional<RegistroEntrada> opcReg=regEntRep.findById(id_registro);
+            if (!opcReg.isEmpty()) {
+                RegistroEntrada registro=opcReg.get();
+                LocalTime horaActual = LocalTime.now();
+                Time hora = Time.valueOf(horaActual);
+                registro.setH_salida(hora);
+               return new ResponseEntity<>(regEntRep.save(registro), HttpStatus.OK);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -4,6 +4,7 @@
  */
 package com.arebofitness.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,16 +43,19 @@ public class Usuario {
     //FKs
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_tipo")
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     //int id_tipo;
     private TipoUsuario usrTipe;
     //@Column(name = "id_plan")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_plan")
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     //int id_plan;
     private Plan plan;
     //@Column(name = "id_horario")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_horario")
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     //int id_horario;
     private Horario horario;
 
@@ -78,6 +82,17 @@ public class Usuario {
         this.foto_perfil = foto_Perfil;
         this.usrTipe = usrTipe;
         this.plan = plan;
+    }
+
+    public Usuario(String nombres, String apellidos, int edad, String telefono, String correo, byte[] foto_perfil, TipoUsuario usrTipe) {
+        this.id_usuario = id_usuario;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.edad = edad;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.foto_perfil = foto_perfil;
+        this.usrTipe = usrTipe;
     }
 
     

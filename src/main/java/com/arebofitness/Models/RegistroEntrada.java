@@ -4,6 +4,7 @@
  */
 package com.arebofitness.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.sql.Date;
 import java.sql.Time;
 import javax.persistence.Column;
@@ -38,6 +39,7 @@ public class RegistroEntrada {
     //FK
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_usuarios")
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private Usuario usuario;
 
     public RegistroEntrada() {
