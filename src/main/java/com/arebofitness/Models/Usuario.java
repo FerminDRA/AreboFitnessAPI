@@ -38,6 +38,8 @@ public class Usuario {
     private String telefono;
     @Column(name = "correo")
     private String correo;
+    
+    //Cambiar a String
     @Column(name = "foto_perfil")
     private byte[] foto_perfil;
     //FKs
