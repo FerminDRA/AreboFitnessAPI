@@ -5,6 +5,8 @@
 package com.arebofitness.Controllers;
 
 import com.arebofitness.DTOs.AllUsuariosDTO;
+import com.arebofitness.Helpers.ApiResponseHelper;
+import com.arebofitness.Helpers.MessageHelper;
 import com.arebofitness.Models.Plan;
 import com.arebofitness.Models.TipoUsuario;
 import com.arebofitness.Models.Usuario;
@@ -13,6 +15,7 @@ import com.arebofitness.Repositories.HorarioRepository;
 import com.arebofitness.Repositories.PlanRepository;
 import com.arebofitness.Repositories.TipoUsuarioRepository;
 import com.arebofitness.Repositories.UsuarioRepository;
+import com.arebofitness.Response.ResponseHandling;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,22 +54,48 @@ public class UsuariosController {
     public ResponseEntity<List<AllUsuariosDTO>> getAllMembers() {
         try {
             List<AllUsuariosDTO> usuarios = allUsrRep.findAll();
+            for (AllUsuariosDTO usuario : usuarios) {
+                Optional<Usuario> usr = usrRep.findById(usuario.getId_usuario());
+                if(!usr.isEmpty()){
+                    
+                }
+            }
             return new ResponseEntity<>(usuarios, HttpStatus.OK);
+            //String successMessage = MessageHelper.successMessage("usuario", "creado");
+            //return ApiResponseHelper.ok(successMessage,HttpStatus.OK, usuarios);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
+    //testHelpers
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getUserById(@PathVariable("id") int id) {
+    public ResponseEntity<Object> getUserById(@PathVariable("id") int id) {
         Optional<Usuario> usr = usrRep.findById(id);
-        if (!usr.isEmpty()) {
-            Usuario users = usr.get();
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        try {
+            if (!usr.isEmpty()) {
+                Usuario users = usr.get();
+                String successMessage = MessageHelper.successMessage("usuario", "creado");
+                //return new ResponseEntity<>(users, HttpStatus.OK);
+                return ApiResponseHelper.ok(successMessage,HttpStatus.OK, users);
+            } else {
+                String errorMessage = MessageHelper.errorMessage("usuario", "actualizar");
+                return ApiResponseHelper.error(errorMessage,HttpStatus.NOT_FOUND, null);
+            }
+        } catch (Exception e) {
+                return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
+    
+//    public ResponseEntity<Usuario> getUserById(@PathVariable("id") int id) {
+//        Optional<Usuario> usr = usrRep.findById(id);
+//        if (!usr.isEmpty()) {
+//            Usuario users = usr.get();
+//            return new ResponseEntity<>(users, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//        }
+//    }
     
     @PostMapping("/test/")
     public ResponseEntity<Usuario> addUser(@RequestBody Usuario user, 
