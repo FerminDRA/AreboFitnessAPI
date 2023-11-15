@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/arebofitness/costos")
+//Agregar el repository el metodo para obtener por el id del plan
 public class CostoController {
     private final CostoRepository costoRepository;
 

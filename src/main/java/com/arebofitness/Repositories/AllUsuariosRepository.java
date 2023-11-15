@@ -4,7 +4,7 @@
  */
 package com.arebofitness.Repositories;
 
-import com.arebofitness.DTOs.AllUsuariosDTO;
+import com.arebofitness.Models.ViewUsuarios;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,6 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author fermin
  */
-public interface AllUsuariosRepository extends JpaRepository<AllUsuariosDTO, Integer>{
-    List<AllUsuariosDTO> findAll();
+public interface AllUsuariosRepository extends JpaRepository<ViewUsuarios, Integer>{
+    List<ViewUsuarios> findAll();
 }
