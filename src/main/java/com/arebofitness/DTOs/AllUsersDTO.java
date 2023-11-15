@@ -4,29 +4,30 @@
  */
 package com.arebofitness.DTOs;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.sql.Date;
 
 /**
  *
  * @author fermin
  */
-@Entity
-@Table(name = "allusers")
-public class AllUsuariosDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AllUsersDTO {
     private int id_usuario;
     private String nombres;
     private int telefono;
     private String nombreplan;
     private String periodo;
+    private Date termino;
     private int costo;
 
-    public AllUsuariosDTO() {
+    
+    public AllUsersDTO(int id_usuario, String nombres, int telefono, String nombreplan, String periodo, Date termino, int costo) {
+        this.id_usuario = id_usuario;
+        this.nombres = nombres;
+        this.telefono = telefono;
+        this.nombreplan = nombreplan;
+        this.periodo = periodo;
+        this.termino = termino;
+        this.costo = costo;
     }
     
     
@@ -63,14 +64,20 @@ public class AllUsuariosDTO {
         this.nombreplan = nombreplan;
     }
 
-    
-
     public String getPeriodo() {
         return periodo;
     }
 
     public void setPeriodo(String periodo) {
         this.periodo = periodo;
+    }
+
+    public Date getTermino() {
+        return termino;
+    }
+
+    public void setTermino(Date termino) {
+        this.termino = termino;
     }
 
     public int getCosto() {
