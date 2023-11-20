@@ -4,43 +4,35 @@
  */
 package com.arebofitness.Models;
 
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author fermin
  */
+@Data
+@NoArgsConstructor
 @Entity
-@Table(name = "planes")
-public class Plan {
-    
+@Table(name = "plans")
+public class Plans {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_plan")
     private int id_plan;
-    @Column(name = "nombre")
-    private String nombre;
-
-    public int getId_plan() {
-        return id_plan;
-    }
-
-    public void setId_plan(int id_plan) {
-        this.id_plan = id_plan;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    @Column(name = "name")
+    private String name;
+    @Column(name = "duration")
+    private String duration;
+    @Column(name = "cost")
+    private BigDecimal cost;
     
     
 }
