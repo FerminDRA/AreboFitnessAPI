@@ -1,70 +1,100 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.arebofitness.Controllers;
 
+import com.arebofitness.DTOs.AllRegistrosDTO;
+import com.arebofitness.Exceptions.DataException;
+import com.arebofitness.Helpers.ApiResponseHelper;
 import com.arebofitness.Models.RegistroEntrada;
-import com.arebofitness.Repositories.RegistroEntradaRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.arebofitness.Services.RegistroEntradaService;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
-import java.util.Optional;
-
+/**
+ *
+ * @author fermin
+ */
 @RestController
-@RequestMapping("/arebofitness/registros-entrada")
+@RequestMapping("/arebofitness/registros")
+@CrossOrigin(origins = "*")
 public class RegistroEntradaController {
-    private final RegistroEntradaRepository registroEntradaRepository;
-
     @Autowired
-    public RegistroEntradaController(RegistroEntradaRepository registroEntradaRepository) {
-        this.registroEntradaRepository = registroEntradaRepository;
-    }
-
-    // Obtener todos los registros de entrada
+    private RegistroEntradaService regServ;
+    
     @GetMapping("/")
-    public ResponseEntity<List<RegistroEntrada>> getAllRegistrosEntrada() {
-        List<RegistroEntrada> registrosEntrada = registroEntradaRepository.findAll();
-        return new ResponseEntity<>(registrosEntrada, HttpStatus.OK);
-    }
-
-    // Obtener un registro de entrada por su ID
-    @GetMapping("/{id}")
-    public ResponseEntity<RegistroEntrada> getRegistroEntradaById(@PathVariable int id) {
-        Optional<RegistroEntrada> optionalRegistroEntrada = registroEntradaRepository.findById(id);
-        if (optionalRegistroEntrada.isPresent()) {
-            return new ResponseEntity<>(optionalRegistroEntrada.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> allRegistros(){
+        try {
+            List<AllRegistrosDTO> registros = regServ.getAll();
+            return ApiResponseHelper.ok("Registros encontrado",HttpStatus.OK, registros);
+        }catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
+        } catch (Exception e) {
+                return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
-
-    // Crear un nuevo registro de entrada
-    @PostMapping("/")
-    public ResponseEntity<RegistroEntrada> createRegistroEntrada(@RequestBody RegistroEntrada registroEntrada) {
-        RegistroEntrada nuevoRegistroEntrada = registroEntradaRepository.save(registroEntrada);
-        return new ResponseEntity<>(nuevoRegistroEntrada, HttpStatus.CREATED);
-    }
-
-    // Actualizar un registro de entrada existente
-    @PutMapping("/{id}")
-    public ResponseEntity<RegistroEntrada> updateRegistroEntrada(@PathVariable int id, @RequestBody RegistroEntrada registroEntrada) {
-        if (registroEntradaRepository.existsById(id)) {
-            registroEntrada.setId_registro(id);
-            RegistroEntrada registroEntradaActualizado = registroEntradaRepository.save(registroEntrada);
-            return new ResponseEntity<>(registroEntradaActualizado, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    
+    @GetMapping("/{fecha}")
+    public ResponseEntity<Object> allRegistrosFecha(@PathVariable("fecha") String fech){
+        try {
+            LocalDate fechsf = LocalDate.parse(fech, DateTimeFormatter.BASIC_ISO_DATE);
+            List<AllRegistrosDTO> registros = regServ.getAllByFecha(Date.valueOf(fechsf));
+            return ApiResponseHelper.ok("Registros encontrado",HttpStatus.OK, registros);
+        }catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
+        } catch (Exception e) {
+                return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
-
-    // Eliminar un registro de entrada por su ID
+    
+    @PostMapping("/entrada/{id}")
+    public ResponseEntity<Object> addRegistro(@RequestBody RegistroEntrada reg,@PathVariable("id") String id_usuario) {
+        try {
+            AllRegistrosDTO registro=regServ.registroEntrada(id_usuario, reg);
+            return ApiResponseHelper.ok("Registro creado",HttpStatus.OK, registro);
+        } catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
+        } catch (Exception e) {
+                return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.NOT_ACCEPTABLE, null);
+        }
+    }
+    
+    
+    @PostMapping("/salida/{id}")
+    public ResponseEntity<Object> addRegistroSalida(@RequestBody RegistroEntrada reg,@PathVariable("id") int id_registro) {
+        try {
+            AllRegistrosDTO registro=regServ.registroSalida(id_registro, reg);
+            return ApiResponseHelper.ok("Salida registrada",HttpStatus.OK, registro);
+        } catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
+        } catch (Exception e) {
+                return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.NOT_ACCEPTABLE, null);
+        }
+    }
+    
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRegistroEntrada(@PathVariable int id) {
-        if (registroEntradaRepository.existsById(id)) {
-            registroEntradaRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> deletePlan(@PathVariable int id) {
+        try {
+            regServ.deleteRegistro(id);
+            return ApiResponseHelper.ok("Registro eliminado", HttpStatus.OK, null);
+        }catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
+        } catch (Exception e) {
+            return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 }

@@ -8,8 +8,8 @@ package com.arebofitness.Exceptions;
  *
  * @author fermin
  */
-public class DataNotFoundException extends RuntimeException {
-    public DataNotFoundException(String message) {
+public class DataException extends RuntimeException {
+    public DataException(String message) {
         super(message);
     }
 }

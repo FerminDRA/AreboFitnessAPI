@@ -21,17 +21,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "plans")
-public class Plans {
+@Table(name = "planes")
+public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_plan")
     private int id_plan;
-    @Column(name = "name")
+    @Column(name = "nombre")
     private String name;
-    @Column(name = "duration")
+    @Column(name = "duracion")
     private String duration;
-    @Column(name = "cost")
+    @Column(name = "costo")
     private BigDecimal cost;
     
     

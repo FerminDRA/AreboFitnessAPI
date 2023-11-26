@@ -5,7 +5,6 @@
 package com.arebofitness.DTOs;
 
 import java.sql.Date;
-import javax.persistence.Column;
 
 /**
  *

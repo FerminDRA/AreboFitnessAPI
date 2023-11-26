@@ -16,12 +16,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author fermin
  */
-
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "registro_entradas")
 public class RegistroEntrada {
@@ -38,62 +41,15 @@ public class RegistroEntrada {
     private Date fecha;
     //FK
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_usuarios")
+    @JoinColumn(name="user_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    private Usuario usuario;
+    private UserCliente usuario;
 
-    public RegistroEntrada() {
-    }
-
-    public RegistroEntrada(Time h_entrada, Date fecha, Usuario usuario) {
+    public RegistroEntrada(Time h_entrada, Date fecha, UserCliente usuario) {
         this.h_entrada = h_entrada;
         this.fecha = fecha;
         this.usuario = usuario;
     }
-    
-    
 
-    public int getId_registro() {
-        return id_registro;
-    }
-
-    public void setId_registro(int id_registro) {
-        this.id_registro = id_registro;
-    }
-
-    public Time getH_entrada() {
-        return h_entrada;
-    }
-
-    public void setH_entrada(Time h_entrada) {
-        this.h_entrada = h_entrada;
-    }
-
-    public Time getH_salida() {
-        return h_salida;
-    }
-
-    public void setH_salida(Time h_salida) {
-        this.h_salida = h_salida;
-    }
-
-    
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-    
     
 }

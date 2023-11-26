@@ -1,16 +1,16 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.arebofitness.Repositories;
 
-import com.arebofitness.Models.Costo;
+import com.arebofitness.Models.UserCliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author fermin
  */
-public interface CostoRepository extends JpaRepository<Costo, Integer>{
+public interface UsuarioCltRepository extends JpaRepository<UserCliente, String>{
     
 }

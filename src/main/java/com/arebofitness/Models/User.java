@@ -4,9 +4,7 @@
  */
 package com.arebofitness.Models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Random;
 import javax.persistence.CascadeType;
@@ -14,14 +12,9 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
@@ -60,13 +53,9 @@ public class User implements Serializable {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private CredentialsEntity credentials;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_plan")
-    @JsonBackReference
-    private Plans plan;
-    
+        
 
-     public User(String name, String lastname, String phone, String age, String email, String foto, String qr) {
+    public User(String name, String lastname, String phone, String age, String email, String foto, String qr) {
         this.name = name;
         this.lastname = lastname;
         this.phone = phone;

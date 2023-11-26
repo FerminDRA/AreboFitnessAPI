@@ -16,7 +16,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface PagoRepository extends JpaRepository<Pago, Integer>{
     @Query(value = "select * from pagos where id_usuario=:id ORDER BY id_pago DESC LIMIT 1;",nativeQuery = true)
-    Pago getPaymentByUserId(@Param("id") Integer id);
+    Pago getPaymentByUserId(@Param("id") String id);
     
     @Query(value = "select * from pagos where id_usuario=:id ORDER BY id_pago;",nativeQuery = true)
     List<Pago> getAllPaymentsByUserId(@Param("id") Integer id);

@@ -4,82 +4,34 @@
  */
 package com.arebofitness.Models;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author fermin
  */
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "allusers")
 public class ViewUsuarios {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_usuario;
+    private int id;
+    private String id_usuario;
     private String nombres;
-    private int telefono;
+    private String telefono;
     private String nombreplan;
-    private String periodo;
-    private int costo;
+    private Date termino;
+    private String duracion;
+    private BigDecimal costo;
 
-    public ViewUsuarios() {
-    }
-    
-    
-
-    public int getId_usuario() {
-        return id_usuario;
-    }
-
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
-    }
-
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
-
-    public int getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getNombreplan() {
-        return nombreplan;
-    }
-
-    public void setNombreplan(String nombreplan) {
-        this.nombreplan = nombreplan;
-    }
-
-    
-
-    public String getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
-    }
-
-    public int getCosto() {
-        return costo;
-    }
-
-    public void setCosto(int costo) {
-        this.costo = costo;
-    }
-    
-    
 }

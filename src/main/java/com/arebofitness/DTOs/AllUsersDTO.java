@@ -4,87 +4,36 @@
  */
 package com.arebofitness.DTOs;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author fermin
  */
+@NoArgsConstructor
+@Data
 public class AllUsersDTO {
-    private int id_usuario;
+    private int id;
+    private String id_usuario;
     private String nombres;
-    private int telefono;
+    private String telefono;
     private String nombreplan;
-    private String periodo;
+    private String duracion;
     private Date termino;
-    private int costo;
+    private BigDecimal costo;
 
     
-    public AllUsersDTO(int id_usuario, String nombres, int telefono, String nombreplan, String periodo, Date termino, int costo) {
+    public AllUsersDTO(int id,String id_usuario, String nombres, String telefono, String nombreplan, String periodo, Date termino, BigDecimal costo) {
+        this.id=id;
         this.id_usuario = id_usuario;
         this.nombres = nombres;
         this.telefono = telefono;
         this.nombreplan = nombreplan;
-        this.periodo = periodo;
+        this.duracion = periodo;
         this.termino = termino;
-        this.costo = costo;
-    }
-    
-    
-
-    public int getId_usuario() {
-        return id_usuario;
-    }
-
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
-    }
-
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
-
-    public int getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getNombreplan() {
-        return nombreplan;
-    }
-
-    public void setNombreplan(String nombreplan) {
-        this.nombreplan = nombreplan;
-    }
-
-    public String getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
-    }
-
-    public Date getTermino() {
-        return termino;
-    }
-
-    public void setTermino(Date termino) {
-        this.termino = termino;
-    }
-
-    public int getCosto() {
-        return costo;
-    }
-
-    public void setCosto(int costo) {
         this.costo = costo;
     }
     

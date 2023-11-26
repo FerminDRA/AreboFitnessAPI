@@ -4,23 +4,22 @@
  */
 package com.arebofitness.DTOs;
 
-import javax.persistence.Column;
 
 /**
  *
  * @author fermin
  */
 public class GetUsuarioDTO {
-    private int id_usuario;
+    private String id_usuario;
     private String nombres;
     private String apellidos;
-    private int edad;
+    private String edad;
     private String telefono;
     private String correo;
     private String tpUsuario;
     private String plan;
 
-    public GetUsuarioDTO(int id_usuario, String nombres, String apellidos, int edad, String telefono, String correo, String tpUsuario, String plan) {
+    public GetUsuarioDTO(String id_usuario, String nombres, String apellidos, String edad, String telefono, String correo, String tpUsuario, String plan) {
         this.id_usuario = id_usuario;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -30,14 +29,25 @@ public class GetUsuarioDTO {
         this.tpUsuario = tpUsuario;
         this.plan = plan;
     }
+
+    public GetUsuarioDTO(String id_usuario, String nombres, String apellidos, String edad, String telefono, String correo, String plan) {
+        this.id_usuario = id_usuario;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.edad = edad;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.plan = plan;
+    }
+    
     
     
 
-    public int getId_usuario() {
+    public String getId_usuario() {
         return id_usuario;
     }
 
-    public void setId_usuario(int id_usuario) {
+    public void setId_usuario(String id_usuario) {
         this.id_usuario = id_usuario;
     }
 
@@ -57,11 +67,11 @@ public class GetUsuarioDTO {
         this.apellidos = apellidos;
     }
 
-    public int getEdad() {
+    public String getEdad() {
         return edad;
     }
 
-    public void setEdad(int edad) {
+    public void setEdad(String edad) {
         this.edad = edad;
     }
 
