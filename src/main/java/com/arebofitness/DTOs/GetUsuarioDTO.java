@@ -4,11 +4,16 @@
  */
 package com.arebofitness.DTOs;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 /**
  *
  * @author fermin
  */
+@NoArgsConstructor
+@Data
 public class GetUsuarioDTO {
     private String id_usuario;
     private String nombres;
@@ -39,73 +44,5 @@ public class GetUsuarioDTO {
         this.correo = correo;
         this.plan = plan;
     }
-    
-    
-    
-
-    public String getId_usuario() {
-        return id_usuario;
-    }
-
-    public void setId_usuario(String id_usuario) {
-        this.id_usuario = id_usuario;
-    }
-
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-
-    public String getEdad() {
-        return edad;
-    }
-
-    public void setEdad(String edad) {
-        this.edad = edad;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getTpUsuario() {
-        return tpUsuario;
-    }
-
-    public void setTpUsuario(String tpUsuario) {
-        this.tpUsuario = tpUsuario;
-    }
-
-    public String getPlan() {
-        return plan;
-    }
-
-    public void setPlan(String plan) {
-        this.plan = plan;
-    }
-    
     
 }
