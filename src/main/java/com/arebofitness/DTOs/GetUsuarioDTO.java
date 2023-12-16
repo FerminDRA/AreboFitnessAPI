@@ -21,19 +21,19 @@ public class GetUsuarioDTO {
     private String edad;
     private String telefono;
     private String correo;
-    private String tpUsuario;
+    //private String tpUsuario;
     private String plan;
 
-    public GetUsuarioDTO(String id_usuario, String nombres, String apellidos, String edad, String telefono, String correo, String tpUsuario, String plan) {
-        this.id_usuario = id_usuario;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.edad = edad;
-        this.telefono = telefono;
-        this.correo = correo;
-        this.tpUsuario = tpUsuario;
-        this.plan = plan;
-    }
+//    public GetUsuarioDTO(String id_usuario, String nombres, String apellidos, String edad, String telefono, String correo, String tpUsuario, String plan) {
+//        this.id_usuario = id_usuario;
+//        this.nombres = nombres;
+//        this.apellidos = apellidos;
+//        this.edad = edad;
+//        this.telefono = telefono;
+//        this.correo = correo;
+//        this.tpUsuario = tpUsuario;
+//        this.plan = plan;
+//    }
 
     public GetUsuarioDTO(String id_usuario, String nombres, String apellidos, String edad, String telefono, String correo, String plan) {
         this.id_usuario = id_usuario;

@@ -51,7 +51,7 @@ public class UsuarioClienteService {
     HorarioRepository hroRep;
 
     
-    public List<AllUsersDTO> getAll(){
+    public List<AllUsersDTO> getAll() {
         List<ViewUsuarios> usuarios = allUsrRep.findAll();
         if(!usuarios.isEmpty()){
             List<AllUsersDTO> users = new ArrayList<>();
