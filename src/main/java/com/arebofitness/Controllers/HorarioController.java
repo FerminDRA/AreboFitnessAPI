@@ -1,70 +1,85 @@
 package com.arebofitness.Controllers;
 
+import com.arebofitness.Exceptions.DataException;
+import com.arebofitness.Helpers.ApiResponseHelper;
 import com.arebofitness.Models.Horario;
-import com.arebofitness.Repositories.HorarioRepository;
+import com.arebofitness.Services.HorariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/arebofitness/horarios")
+@CrossOrigin(origins = "*")
 public class HorarioController {
-    private final HorarioRepository horarioRepository;
-
     @Autowired
-    public HorarioController(HorarioRepository horarioRepository) {
-        this.horarioRepository = horarioRepository;
-    }
+    private HorariosService hrrServ;
 
     // Obtener todos los horarios
     @GetMapping("/")
-    public ResponseEntity<List<Horario>> getAllHorarios() {
-        List<Horario> horarios = horarioRepository.findAll();
-        return new ResponseEntity<>(horarios, HttpStatus.OK);
+    public ResponseEntity<Object> getAllHorarios() {
+        try {
+            List<Horario> hrrs = hrrServ.getAll();
+            return ApiResponseHelper.ok("Horarios encontrados",HttpStatus.OK, hrrs);
+        }catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NO_CONTENT, null);
+        }  catch (Exception e) {
+            return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
     }
 
     // Obtener un horario por su ID
     @GetMapping("/{id}")
-    public ResponseEntity<Horario> getHorarioById(@PathVariable int id) {
-        Optional<Horario> optionalHorario = horarioRepository.findById(id);
-        if (optionalHorario.isPresent()) {
-            return new ResponseEntity<>(optionalHorario.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> getHorarioById(@PathVariable int id) {
+        try {
+            Horario hrr= hrrServ.getHorariobyID(id);
+            return ApiResponseHelper.ok("Plan encontrado",HttpStatus.OK, hrr);
+        }catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
+        } catch (Exception e) {
+                return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
     // Crear un nuevo horario
     @PostMapping("/")
-    public ResponseEntity<Horario> createHorario(@RequestBody Horario horario) {
-        Horario nuevoHorario = horarioRepository.save(horario);
-        return new ResponseEntity<>(nuevoHorario, HttpStatus.CREATED);
+    public ResponseEntity<Object> createHorario(@RequestBody Horario horario) {
+        try {
+            Horario nwHrr = hrrServ.createHorario(horario);
+            return ApiResponseHelper.ok("Horario creado", HttpStatus.CREATED, nwHrr);
+        }catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_ACCEPTABLE, null);
+        } catch (Exception e) {
+            return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
     }
 
     // Actualizar un horario existente
     @PutMapping("/{id}")
-    public ResponseEntity<Horario> updateHorario(@PathVariable int id, @RequestBody Horario horario) {
-        if (horarioRepository.existsById(id)) {
-            horario.setId_horario(id);
-            Horario horarioActualizado = horarioRepository.save(horario);
-            return new ResponseEntity<>(horarioActualizado, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> updateHorario(@PathVariable int id, @RequestBody Horario horario) {
+        try {
+            hrrServ.updateHorario(id,horario);
+            return ApiResponseHelper.ok("Horario actualizado", HttpStatus.OK, null);
+        }catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_ACCEPTABLE, null);
+        } catch (Exception e) {
+            return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
     // Eliminar un horario por su ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteHorario(@PathVariable int id) {
-        if (horarioRepository.existsById(id)) {
-            horarioRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> deleteHorario(@PathVariable int id) {
+        try {
+            hrrServ.deleteHorario(id);
+            return ApiResponseHelper.ok("Horario eliminado", HttpStatus.OK, null);
+        }catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
+        } catch (Exception e) {
+            return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 }

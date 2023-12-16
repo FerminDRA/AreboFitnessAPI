@@ -4,52 +4,31 @@
  */
 package com.arebofitness.Models;
 
+import java.sql.Time;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author fermin
  */
+@Data
+@NoArgsConstructor
 @Entity
-@Table(name = "horarios")
+@Table(name = "horarios_emp")
 public class Horario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_horario")
     private int id_horario;
     @Column(name = "hora_entrada")
-    private String h_entrada;
+    private Time hora_entrada;
     @Column(name = "hora_salida")
-    private String h_salida;
-
-    public int getId_horario() {
-        return id_horario;
-    }
-
-    public void setId_horario(int id_horario) {
-        this.id_horario = id_horario;
-    }
-
-    public String getH_entrada() {
-        return h_entrada;
-    }
-
-    public void setH_entrada(String h_entrada) {
-        this.h_entrada = h_entrada;
-    }
-
-    public String getH_salida() {
-        return h_salida;
-    }
-
-    public void setH_salida(String h_salida) {
-        this.h_salida = h_salida;
-    }
-    
-    
+    private Time hora_salida;
 }

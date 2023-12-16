@@ -2,15 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.arebofitness.Repositories;
-
-import com.arebofitness.Models.Usuario;
-import org.springframework.data.jpa.repository.JpaRepository;
+package com.arebofitness.Exceptions;
 
 /**
  *
  * @author fermin
  */
-public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
-    
+public class DataException extends RuntimeException {
+    public DataException(String message) {
+        super(message);
+    }
 }

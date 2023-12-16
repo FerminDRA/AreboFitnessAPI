@@ -4,19 +4,17 @@
  */
 package com.arebofitness.Services;
 
-import com.arebofitness.DTOs.GetPagoDTO;
+import com.arebofitness.DTOs.AllPagosDTO;
 import com.arebofitness.DTOs.PagoDTO;
-import com.arebofitness.Exceptions.DataNotFoundException;
-import com.arebofitness.Models.Admin;
-import com.arebofitness.Models.Costo;
+import com.arebofitness.Exceptions.DataException;
 import com.arebofitness.Models.Pago;
 import com.arebofitness.Models.Plan;
-import com.arebofitness.Models.Usuario;
-import com.arebofitness.Repositories.AdminRepository;
-import com.arebofitness.Repositories.CostoRepository;
+import com.arebofitness.Models.UserCliente;
+import com.arebofitness.Models.UserPersonal;
 import com.arebofitness.Repositories.PagoRepository;
 import com.arebofitness.Repositories.PlanRepository;
-import com.arebofitness.Repositories.UsuarioRepository;
+import com.arebofitness.Repositories.UsuarioCltRepository;
+import com.arebofitness.Repositories.UsuarioPsnlRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,35 +31,64 @@ public class PagoService {
     @Autowired
     private PagoRepository pgRep;
     @Autowired
-    CostoRepository cstRep;
+    UsuarioCltRepository usrRep;
     @Autowired
-    UsuarioRepository usrRep;
+    UsuarioPsnlRepository usrPrRep;
     @Autowired
     PlanRepository plnRep;
-    @Autowired
-    AdminRepository admRep;
     
-//    public Listcw(){
-//        List<Pago> pagos = pgRep.findAll();
-//    }
+    public List<AllPagosDTO> allPagos(){
+        List<Pago> pagos = pgRep.findAll();
+        List<AllPagosDTO> allPg=new ArrayList<>();
+//        for (Pago pago : pagos) {
+//            Optional <UserCliente> clOpc=usrRep.findById(pago.getUsuarios().get(0));
+//            AllPagosDTO allPagos=new AllPagosDTO(clOpc.get().getId_usuario(),
+//                    clOpc.get().getName(), pago.getPlan().getName(),
+//                    pago.getPlan().getDuration(), pago.getFechaPago(),
+//                    pago.getMonto_pago());
+//            allPg.add(allPagos);
+//        }
+        for (Pago pago : pagos) {
+            Optional <UserCliente> clOpc=usrRep.findById(pago.getUsuarios().get(0));
+            AllPagosDTO allPagos=new AllPagosDTO(pago.getUsuarios(),
+                    clOpc.get().getName(), pago.getPlan().getName(),
+                    pago.getPlan().getDuration(), pago.getFechaPago(),
+                    pago.getMonto_pago());
+            allPg.add(allPagos);
+        }
+        return allPg;
+    }
     
-    public List<GetPagoDTO> getPagosUsuario(int id){
-        List<Pago> pagos = pgRep.getAllPaymentsByUserId(id);
-        List<GetPagoDTO> pgDto = new ArrayList<>();
-        if (!pagos.isEmpty()) {
-            int i = 1;
-            for (Pago pago : pagos) {
-                Optional<Costo> cstOpc = cstRep.findById(pago.getPlan().getId_plan());
-                Costo cst = cstOpc.get();
-                pgDto.add(new GetPagoDTO(i, pago.getAdmin().getNombre(), pago.getPlan().getNombre(),
-                        cst.getPeriodo(), pago.getF_inicio(), pago.getF_fin(), pago.getMonto_pago()
-                ));
-                i++;
+    public List<AllPagosDTO> getPagosUsuario(String id){
+        List<Pago> pagos = pgRep.findAll();
+        List<AllPagosDTO> allPg=new ArrayList<>();
+        for (Pago pago : pagos) {
+//            for (String nm : pago.getUsuarios()) {
+//                Optional <UserCliente> clOpc=usrRep.findById(nm);
+//                if(clOpc.get().getId_usuario().equals(id)){
+//                    AllPagosDTO allPagos=new AllPagosDTO(clOpc.get().getId_usuario(),
+//                    clOpc.get().getName(), pago.getPlan().getName(),
+//                    pago.getPlan().getDuration(), pago.getFechaPago(),
+//                    pago.getMonto_pago());
+//                    allPg.add(allPagos);
+//                }
+//            }
+            for (String nm : pago.getUsuarios()) {
+                Optional <UserCliente> clOpc=usrRep.findById(nm);
+                if(clOpc.get().getId_usuario().equals(id)){
+                    AllPagosDTO allPagos=new AllPagosDTO(pago.getUsuarios(),
+                    clOpc.get().getName(), pago.getPlan().getName(),
+                    pago.getPlan().getDuration(), pago.getFechaPago(),
+                    pago.getMonto_pago());
+                    allPg.add(allPagos);
+                }
             }
-            return pgDto;
+        }
+        if (!allPg.isEmpty()) {
+            return allPg;
         }
         else{
-            throw new DataNotFoundException("No se encontraron pagos para el usuario con ID: " + id);
+            throw new DataException("No se encontraron pagos para el usuario con ID: " + id);
         }
         
     }
@@ -70,37 +97,43 @@ public class PagoService {
         Optional <Pago> opcPg=pgRep.findById(id);
         if(opcPg.isPresent()){
             Pago pago=opcPg.get();
-            PagoDTO pgDto=new PagoDTO(pago.getId_pago(),pago.getUsuario().getId_usuario(),
-                    pago.getAdmin().getId_admin(),pago.getPlan().getId_plan(),
-                    pago.getF_inicio(), pago.getF_fin(), pago.getComprobante());
+            PagoDTO pgDto=new PagoDTO(pago.getId_pago(), pago.getUsuario().getName(),
+                    pago.getUsuarios(), pago.getPlan().getId_plan(),
+                    pago.getMonto_pago(), pago.getF_inicio(), pago.getF_fin(),
+                    pago.getFechaPago(),pago.getComprobante());
             return pgDto;
         }
         else{
-            throw new DataNotFoundException("No se encontraro el usuario con ID: " + id);
+            throw new DataException("No se encontraro el usuario con ID: " + id);
         }
     }
     
     public PagoDTO createPago(PagoDTO pago){
-        Optional<Usuario> opcUsr = usrRep.findById(pago.getId_usuario());
-        Optional<Admin> opcAdm = admRep.findById(pago.getId_admin());
+        Optional<UserPersonal> opcUsr = usrPrRep.findById(pago.getId_usuario());
+        //Optional<Admin> opcAdm = admRep.findById(pago.getId_admin());
         Optional<Plan> opcPln = plnRep.findById(pago.getId_plan());
-        Optional<Costo> opcCst = cstRep.findById(pago.getId_costo());
+        //Optional<Costo> opcCst = cstRep.findById(pago.getId_costo());
 
-        if (opcUsr.isPresent() && opcAdm.isPresent() && opcPln.isPresent() && opcCst.isPresent()) {
-            Pago newPago = pgRep.save(new Pago(
-                    pago.getF_inicio(),
-                    pago.getF_fin(),
-                    pago.getComprobante(),
-                    opcCst.get().getCosto(),
-                    opcUsr.get(),
-                    opcAdm.get(),
-                    opcPln.get()
-            ));
-            PagoDTO pgDTO=getPagoById(newPago.getId_pago());
-            return pgDTO;
+        if (opcUsr.isPresent() &&opcPln.isPresent()) {
+            Pago newPago = pgRep.save(new Pago(pago.getUsuarios(), pago.getF_fin(),
+                    pago.getF_fin(), pago.getFechapago(), pago.getComprobante(),
+                    pago.getMonto_pago(), opcUsr.get(), opcPln.get()));
+            //PagoDTO pgDTO=getPagoById(newPago.getId_pago());
+            pago.setId_pago(newPago.getId_pago());
+            return pago;
         }
         else{
             throw new IllegalArgumentException("Datos incompletos para crear el pago");
+        }
+    }
+    
+    public void deletePago(int id){
+        Optional<Pago> opc=pgRep.findById(id);
+        if(opc.isPresent()){
+            pgRep.deleteById(id);
+        }
+        else{
+            throw new DataException("No se encontro un pago con el id: "+id);
         }
     }
 }

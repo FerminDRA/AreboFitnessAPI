@@ -6,12 +6,8 @@ package com.arebofitness.Models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import javax.persistence.*;
 import lombok.*;
-import java.lang.StringBuilder;
 
 /**
  *
@@ -28,11 +24,18 @@ public class UserPersonal extends User implements Serializable{
     @JsonBackReference
     private Horario horario;
 
-    public UserPersonal(String name, String lastname, String phone, String age, String email, String foto, String qr) {
-        super(name, lastname, phone, age, email, foto, qr);
-    }
+//    public UserPersonal(String name, String lastname, String phone, String age, String email, String foto, String qr) {
+//        super(name, lastname, phone, age, email, foto, qr);
+//    }
 
-    public UserPersonal() {
+    public UserPersonal(Horario horario, String name, String lastname, String phone, String age, String email, String foto, String qr) {
+        super(name, lastname, phone, age, email, foto, qr);
+        this.horario = horario;
+        //createCredentials();
+    }
+    
+    public void createCredentials() {
+        super.createCredentials("Personal");
     }
 
     public Horario getHorario() {
