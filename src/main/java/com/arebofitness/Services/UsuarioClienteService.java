@@ -18,7 +18,6 @@ import com.arebofitness.Repositories.AllUsuariosRepository;
 import com.arebofitness.Repositories.HorarioRepository;
 import com.arebofitness.Repositories.PagoRepository;
 import com.arebofitness.Repositories.PlanRepository;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -75,7 +74,8 @@ public class UsuarioClienteService {
         if (usr.isPresent()) {
             UserCliente user = usr.get();
             GetUsuarioDTO usrDto = new GetUsuarioDTO(user.getId_usuario(), user.getName(), user.getLastname(),
-                    user.getAge(), user.getPhone(), user.getEmail(),user.getPlan().getName()
+                    user.getAge(), user.getPhone(), user.getEmail(),user.getPlan().getName(),
+                    user.getFoto(),user.getQr()
             );
             //return new ResponseEntity<>(users, HttpStatus.OK);
             return usrDto;
@@ -107,14 +107,4 @@ public class UsuarioClienteService {
             return false;
         }
     }
-    
-    public boolean createPersonal(UserListDTO usrPg, int id){
-        //Optional<Horario> hrrOpc=hroRep.findById(id);
-        UserPersonal user = new UserPersonal(null, usrPg.getNombre(), usrPg.getApellidos(),
-                usrPg.getTelefono(), usrPg.getEdad(), usrPg.getCorreo(),
-                usrPg.getFoto(), usrPg.getQr());
-        usrPrsRep.save(user);
-        return true;
-    }
-    
 }

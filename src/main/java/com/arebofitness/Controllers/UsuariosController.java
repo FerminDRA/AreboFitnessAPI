@@ -77,21 +77,6 @@ public class UsuariosController {
         }
     }
     
-    
-    //Partir la tabla para los empleados y usuarios
-    @PostMapping("/empleado/{id}")
-    public ResponseEntity<Object> addEmployee(@RequestBody UserListDTO user, @PathVariable("id") int id){
-        try {
-            Boolean res = usrServ.createPersonal(user,id);
-            if (res) {
-                return ApiResponseHelper.ok("Usuario creado", HttpStatus.OK, null);
-            } else {
-                return ApiResponseHelper.ok("Error al guardar usuario", HttpStatus.NOT_ACCEPTABLE, null);
-            }
-        } catch (Exception e) {
-            return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR, null);
-        }
-    }
 //    
 //    @PutMapping("/")
 //    public ResponseEntity<Usuario> editUsuario(@RequestParam int id_user, @RequestBody Usuario user){

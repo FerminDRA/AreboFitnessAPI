@@ -1,6 +1,7 @@
 package com.arebofitness.Controllers;
 
 import com.arebofitness.DTOs.AllPagosDTO;
+import com.arebofitness.DTOs.GetPagoDTO;
 import com.arebofitness.DTOs.PagoDTO;
 import com.arebofitness.Exceptions.DataException;
 import com.arebofitness.Helpers.ApiResponseHelper;
@@ -28,30 +29,30 @@ public class PagoController {
     }
 
     //Obtener pago por id usuario
-    @GetMapping("/{id}")
+    @GetMapping("/usr/{id}")
     public ResponseEntity<Object> getPagoByUserId(@PathVariable String id) {
         try {
-            List<AllPagosDTO> pgDto = pgServ.getPagosUsuario(id);
-            return ApiResponseHelper.ok("Pagos encontrados", HttpStatus.OK, pgDto);
+            List<GetPagoDTO> pgDto = pgServ.getPagosUsuario(id);
+            return ApiResponseHelper.ok("Pagos del usuario "+id+" encontrados", HttpStatus.OK, pgDto);
         }catch (DataException e) {
             return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
         } catch (Exception e) {
             // Manejar otras excepciones no específicas aquí si es necesario
-            return ApiResponseHelper.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+            return ApiResponseHelper.error("Erro de peticion: " +e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }   
     
     //Obtener pago por id
-    @GetMapping("/pg/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> getPagoById(@PathVariable int id) {
         try {
-            PagoDTO pgDto = pgServ.getPagoById(id);
+            GetPagoDTO pgDto = pgServ.getPagoById(id);
             return ApiResponseHelper.ok("Pagos encontrados", HttpStatus.OK, pgDto);
         }catch (DataException e) {
             return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
         } catch (Exception e) {
             // Manejar otras excepciones no específicas aquí si es necesario
-            return ApiResponseHelper.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+            return ApiResponseHelper.error("Erro de peticion: " +e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
@@ -90,7 +91,7 @@ public class PagoController {
         }catch (DataException e) {
             return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
         } catch (Exception e) {
-            return ApiResponseHelper.error("Erro al crear el pago: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+            return ApiResponseHelper.error("Erro de peticion: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 }

@@ -33,20 +33,23 @@ public class AllPagosDTO {
 //        this.costo = costo;
 //    }
     
-    private ArrayList<String> usuarios;
+    //private ArrayList<String> usuarios;
     //private String id_user;
+    private int id;
     private String nombre;
     private String nm_plan;
     private String duracion;
     private Timestamp fechaPago;
     private BigDecimal costo;
+    private String comprobante;
 
-    public AllPagosDTO(ArrayList<String> usuarios, String nombre, String nm_plan, String duracion, Timestamp fechaPago, BigDecimal costo) {
-        this.usuarios = usuarios;
+    public AllPagosDTO(int id, String nombre, String nm_plan, String duracion, Timestamp fechaPago, BigDecimal costo,String comprobante) {
+        this.id = id;
         this.nombre = nombre;
         this.nm_plan = nm_plan;
         this.duracion = duracion;
         this.fechaPago = fechaPago;
         this.costo = costo;
+        this.comprobante=comprobante;
     }
 }

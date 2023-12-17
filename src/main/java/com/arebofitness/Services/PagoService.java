@@ -5,6 +5,7 @@
 package com.arebofitness.Services;
 
 import com.arebofitness.DTOs.AllPagosDTO;
+import com.arebofitness.DTOs.GetPagoDTO;
 import com.arebofitness.DTOs.PagoDTO;
 import com.arebofitness.Exceptions.DataException;
 import com.arebofitness.Models.Pago;
@@ -16,7 +17,9 @@ import com.arebofitness.Repositories.PlanRepository;
 import com.arebofitness.Repositories.UsuarioCltRepository;
 import com.arebofitness.Repositories.UsuarioPsnlRepository;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,19 +52,20 @@ public class PagoService {
 //            allPg.add(allPagos);
 //        }
         for (Pago pago : pagos) {
-            Optional <UserCliente> clOpc=usrRep.findById(pago.getUsuarios().get(0));
-            AllPagosDTO allPagos=new AllPagosDTO(pago.getUsuarios(),
-                    clOpc.get().getName(), pago.getPlan().getName(),
+            //Optional <UserCliente> clOpc=usrRep.findById(pago.getUsuarios().get(0));
+            //Optional <UserPersonal> psOpc=usrPrRep.findById(pago.getUsuario().getId_usuario());
+            AllPagosDTO allPagos=new AllPagosDTO(pago.getId_pago(),
+                    pago.getUsuario().getName(), pago.getPlan().getName(),
                     pago.getPlan().getDuration(), pago.getFechaPago(),
-                    pago.getMonto_pago());
+                    pago.getMonto_pago(),pago.getComprobante());
             allPg.add(allPagos);
         }
         return allPg;
     }
     
-    public List<AllPagosDTO> getPagosUsuario(String id){
+    public List<GetPagoDTO> getPagosUsuario(String id){
         List<Pago> pagos = pgRep.findAll();
-        List<AllPagosDTO> allPg=new ArrayList<>();
+        List<GetPagoDTO> allPg=new ArrayList<>();
         for (Pago pago : pagos) {
 //            for (String nm : pago.getUsuarios()) {
 //                Optional <UserCliente> clOpc=usrRep.findById(nm);
@@ -76,10 +80,20 @@ public class PagoService {
             for (String nm : pago.getUsuarios()) {
                 Optional <UserCliente> clOpc=usrRep.findById(nm);
                 if(clOpc.get().getId_usuario().equals(id)){
-                    AllPagosDTO allPagos=new AllPagosDTO(pago.getUsuarios(),
-                    clOpc.get().getName(), pago.getPlan().getName(),
-                    pago.getPlan().getDuration(), pago.getFechaPago(),
-                    pago.getMonto_pago());
+                    List<Map<String, String>> usuarios = new ArrayList<>();
+                    for (String idcls : pago.getUsuarios()) {
+                        Optional<UserCliente> opcCls = usrRep.findById(idcls);
+                        if (opcCls.isPresent()) {
+                            UserCliente usr = opcCls.get();
+                            Map<String, String> datos = new HashMap<>();
+                            datos.put("id", usr.getId_usuario());
+                            datos.put("nombre", usr.getName());
+                            usuarios.add(datos);
+                        }
+                    }
+                    GetPagoDTO allPagos=new GetPagoDTO(pago.getId_pago(),usuarios, pago.getPlan().getName(),
+                    pago.getMonto_pago(), pago.getFechaPago(),
+                    pago.getComprobante());
                     allPg.add(allPagos);
                 }
             }
@@ -93,14 +107,24 @@ public class PagoService {
         
     }
     
-    public PagoDTO getPagoById(int id){
+    public GetPagoDTO getPagoById(int id){
         Optional <Pago> opcPg=pgRep.findById(id);
         if(opcPg.isPresent()){
             Pago pago=opcPg.get();
-            PagoDTO pgDto=new PagoDTO(pago.getId_pago(), pago.getUsuario().getName(),
-                    pago.getUsuarios(), pago.getPlan().getId_plan(),
-                    pago.getMonto_pago(), pago.getF_inicio(), pago.getF_fin(),
-                    pago.getFechaPago(),pago.getComprobante());
+            List<Map<String, String>> usuarios = new ArrayList<>();
+            for(String idcls:pago.getUsuarios()){
+                Optional<UserCliente> opcCls=usrRep.findById(idcls);
+                if(opcCls.isPresent()){
+                    UserCliente usr=opcCls.get();
+                    Map<String, String> datos = new HashMap<>();
+                    datos.put("id",usr.getId_usuario());
+                    datos.put("nombre", usr.getName());
+                    usuarios.add(datos);
+                }
+            }
+            GetPagoDTO pgDto=new GetPagoDTO(pago.getId_pago(),usuarios, pago.getPlan().getName(),
+                    pago.getMonto_pago(), pago.getFechaPago(),
+                    pago.getComprobante());
             return pgDto;
         }
         else{
@@ -115,7 +139,7 @@ public class PagoService {
         //Optional<Costo> opcCst = cstRep.findById(pago.getId_costo());
 
         if (opcUsr.isPresent() &&opcPln.isPresent()) {
-            Pago newPago = pgRep.save(new Pago(pago.getUsuarios(), pago.getF_fin(),
+            Pago newPago = pgRep.save(new Pago(pago.getUsuarios(), pago.getF_inicio(),
                     pago.getF_fin(), pago.getFechapago(), pago.getComprobante(),
                     pago.getMonto_pago(), opcUsr.get(), opcPln.get()));
             //PagoDTO pgDTO=getPagoById(newPago.getId_pago());

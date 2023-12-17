@@ -27,6 +27,8 @@ public class Horario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_horario")
     private int id_horario;
+    @Column(name = "nombre")
+    private String nombre;
     @Column(name = "hora_entrada")
     private Time hora_entrada;
     @Column(name = "hora_salida")
