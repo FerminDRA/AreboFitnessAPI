@@ -37,7 +37,7 @@ public class PagoController {
             return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
         } catch (Exception e) {
             // Manejar otras excepciones no específicas aquí si es necesario
-            return ApiResponseHelper.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+            return ApiResponseHelper.error("Erro de peticion: " +e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }   
     
@@ -51,7 +51,7 @@ public class PagoController {
             return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
         } catch (Exception e) {
             // Manejar otras excepciones no específicas aquí si es necesario
-            return ApiResponseHelper.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+            return ApiResponseHelper.error("Erro de peticion: " +e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
@@ -90,7 +90,7 @@ public class PagoController {
         }catch (DataException e) {
             return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
         } catch (Exception e) {
-            return ApiResponseHelper.error("Erro al crear el pago: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+            return ApiResponseHelper.error("Erro de peticion: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 }

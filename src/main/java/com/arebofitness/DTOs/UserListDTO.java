@@ -21,5 +21,18 @@ public class UserListDTO {
     private String correo;
     private String foto;
     private String qr;
+    private String nombreHr;
+
+    public UserListDTO(String nombre, String apellidos, String edad, String telefono, String correo, String foto, String qr, String nombreHr) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.edad = edad;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.foto = foto;
+        this.qr = qr;
+        this.nombreHr = nombreHr;
+    }
+    
     
 }
