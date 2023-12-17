@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class UserListDTO {
+    private String id;
     private String nombre;
     private String apellidos;
     private String edad;
@@ -23,7 +24,8 @@ public class UserListDTO {
     private String qr;
     private String nombreHr;
 
-    public UserListDTO(String nombre, String apellidos, String edad, String telefono, String correo, String foto, String qr, String nombreHr) {
+    public UserListDTO(String id,String nombre, String apellidos, String edad, String telefono, String correo, String foto, String qr, String nombreHr) {
+        this.id=id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.edad = edad;

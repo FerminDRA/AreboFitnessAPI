@@ -63,47 +63,55 @@ public class PagoService {
         return allPg;
     }
     
-//    public List<AllPagosDTO> getPagosUsuario(String id){
-//        List<Pago> pagos = pgRep.findAll();
-//        List<AllPagosDTO> allPg=new ArrayList<>();
-//        for (Pago pago : pagos) {
-////            for (String nm : pago.getUsuarios()) {
-////                Optional <UserCliente> clOpc=usrRep.findById(nm);
-////                if(clOpc.get().getId_usuario().equals(id)){
-////                    AllPagosDTO allPagos=new AllPagosDTO(clOpc.get().getId_usuario(),
-////                    clOpc.get().getName(), pago.getPlan().getName(),
-////                    pago.getPlan().getDuration(), pago.getFechaPago(),
-////                    pago.getMonto_pago());
-////                    allPg.add(allPagos);
-////                }
-////            }
+    public List<GetPagoDTO> getPagosUsuario(String id){
+        List<Pago> pagos = pgRep.findAll();
+        List<GetPagoDTO> allPg=new ArrayList<>();
+        for (Pago pago : pagos) {
 //            for (String nm : pago.getUsuarios()) {
 //                Optional <UserCliente> clOpc=usrRep.findById(nm);
 //                if(clOpc.get().getId_usuario().equals(id)){
-//                    AllPagosDTO allPagos=new AllPagosDTO(pago.getUsuarios(),
+//                    AllPagosDTO allPagos=new AllPagosDTO(clOpc.get().getId_usuario(),
 //                    clOpc.get().getName(), pago.getPlan().getName(),
 //                    pago.getPlan().getDuration(), pago.getFechaPago(),
 //                    pago.getMonto_pago());
 //                    allPg.add(allPagos);
 //                }
 //            }
-//        }
-//        if (!allPg.isEmpty()) {
-//            return allPg;
-//        }
-//        else{
-//            throw new DataException("No se encontraron pagos para el usuario con ID: " + id);
-//        }
-//        
-//    }
+            for (String nm : pago.getUsuarios()) {
+                Optional <UserCliente> clOpc=usrRep.findById(nm);
+                if(clOpc.get().getId_usuario().equals(id)){
+                    List<Map<String, String>> usuarios = new ArrayList<>();
+                    for (String idcls : pago.getUsuarios()) {
+                        Optional<UserCliente> opcCls = usrRep.findById(idcls);
+                        if (opcCls.isPresent()) {
+                            UserCliente usr = opcCls.get();
+                            Map<String, String> datos = new HashMap<>();
+                            datos.put("id", usr.getId_usuario());
+                            datos.put("nombre", usr.getName());
+                            usuarios.add(datos);
+                        }
+                    }
+                    GetPagoDTO allPagos=new GetPagoDTO(pago.getId_pago(),usuarios, pago.getPlan().getName(),
+                    pago.getMonto_pago(), pago.getFechaPago(),
+                    pago.getComprobante());
+                    allPg.add(allPagos);
+                }
+            }
+        }
+        if (!allPg.isEmpty()) {
+            return allPg;
+        }
+        else{
+            throw new DataException("No se encontraron pagos para el usuario con ID: " + id);
+        }
+        
+    }
     
     public GetPagoDTO getPagoById(int id){
         Optional <Pago> opcPg=pgRep.findById(id);
         if(opcPg.isPresent()){
             Pago pago=opcPg.get();
-            //List<String>cls=pago.getUsuarios();
             List<Map<String, String>> usuarios = new ArrayList<>();
-            //List<UserCliente> clientes=new ArrayList<>();
             for(String idcls:pago.getUsuarios()){
                 Optional<UserCliente> opcCls=usrRep.findById(idcls);
                 if(opcCls.isPresent()){
@@ -131,7 +139,7 @@ public class PagoService {
         //Optional<Costo> opcCst = cstRep.findById(pago.getId_costo());
 
         if (opcUsr.isPresent() &&opcPln.isPresent()) {
-            Pago newPago = pgRep.save(new Pago(pago.getUsuarios(), pago.getF_fin(),
+            Pago newPago = pgRep.save(new Pago(pago.getUsuarios(), pago.getF_inicio(),
                     pago.getF_fin(), pago.getFechapago(), pago.getComprobante(),
                     pago.getMonto_pago(), opcUsr.get(), opcPln.get()));
             //PagoDTO pgDTO=getPagoById(newPago.getId_pago());

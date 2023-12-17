@@ -29,18 +29,18 @@ public class PagoController {
     }
 
     //Obtener pago por id usuario
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Object> getPagoByUserId(@PathVariable String id) {
-//        try {
-//            List<AllPagosDTO> pgDto = pgServ.getPagosUsuario(id);
-//            return ApiResponseHelper.ok("Pagos encontrados", HttpStatus.OK, pgDto);
-//        }catch (DataException e) {
-//            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
-//        } catch (Exception e) {
-//            // Manejar otras excepciones no específicas aquí si es necesario
-//            return ApiResponseHelper.error("Erro de peticion: " +e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
-//        }
-//    }   
+    @GetMapping("/usr/{id}")
+    public ResponseEntity<Object> getPagoByUserId(@PathVariable String id) {
+        try {
+            List<GetPagoDTO> pgDto = pgServ.getPagosUsuario(id);
+            return ApiResponseHelper.ok("Pagos del usuario "+id+" encontrados", HttpStatus.OK, pgDto);
+        }catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_FOUND, null);
+        } catch (Exception e) {
+            // Manejar otras excepciones no específicas aquí si es necesario
+            return ApiResponseHelper.error("Erro de peticion: " +e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
+    }   
     
     //Obtener pago por id
     @GetMapping("/{id}")

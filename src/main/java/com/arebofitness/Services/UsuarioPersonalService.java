@@ -59,7 +59,7 @@ public class UsuarioPersonalService{
         Optional<UserPersonal> opcPers=usrPrsl.findById(id);
         if(opcPers.isPresent()){
             UserPersonal psr=opcPers.get();
-            UserListDTO personal= new UserListDTO(psr.getName(), psr.getLastname(), psr.getAge(),
+            UserListDTO personal= new UserListDTO(psr.getId_usuario(),psr.getName(), psr.getLastname(), psr.getAge(),
                     psr.getPhone(), psr.getEmail(), psr.getFoto(),
                     psr.getQr(), psr.getHorario().getNombre());
             return personal;
@@ -74,7 +74,7 @@ public class UsuarioPersonalService{
         if(!usrPrs.isEmpty()){
             List<UserListDTO> personal = new ArrayList<>();
             for (UserPersonal psr : usrPrs) {
-                UserListDTO user= new UserListDTO(psr.getName(), psr.getLastname(), psr.getAge(),
+                UserListDTO user= new UserListDTO(psr.getId_usuario(),psr.getName(), psr.getLastname(), psr.getAge(),
                     psr.getPhone(), psr.getEmail(), psr.getFoto(),
                     psr.getQr(), psr.getHorario().getNombre());
                 personal.add(user);

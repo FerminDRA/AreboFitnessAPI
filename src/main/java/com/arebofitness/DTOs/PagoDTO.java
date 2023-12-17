@@ -28,8 +28,7 @@ public class PagoDTO {
     private Timestamp fechapago;
     private String comprobante;
 
-    public PagoDTO(int id_pago, String id_usuario, ArrayList<String> usuarios, int id_plan, BigDecimal id_costo, Date f_inicio, Date f_fin, Timestamp fechapago, String comprobante) {
-        this.id_pago = id_pago;
+    public PagoDTO(String id_usuario, ArrayList<String> usuarios, int id_plan, BigDecimal id_costo, Date f_inicio, Date f_fin, Timestamp fechapago, String comprobante) {
         this.id_usuario = id_usuario;
         this.usuarios = usuarios;
         this.id_plan = id_plan;
