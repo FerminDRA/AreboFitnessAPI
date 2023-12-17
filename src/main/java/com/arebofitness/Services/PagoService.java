@@ -49,9 +49,10 @@ public class PagoService {
 //            allPg.add(allPagos);
 //        }
         for (Pago pago : pagos) {
-            Optional <UserCliente> clOpc=usrRep.findById(pago.getUsuarios().get(0));
+            //Optional <UserCliente> clOpc=usrRep.findById(pago.getUsuarios().get(0));
+            //Optional <UserPersonal> psOpc=usrPrRep.findById(pago.getUsuario().getId_usuario());
             AllPagosDTO allPagos=new AllPagosDTO(pago.getUsuarios(),
-                    clOpc.get().getName(), pago.getPlan().getName(),
+                    pago.getUsuario().getName(), pago.getPlan().getName(),
                     pago.getPlan().getDuration(), pago.getFechaPago(),
                     pago.getMonto_pago());
             allPg.add(allPagos);
