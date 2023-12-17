@@ -31,7 +31,7 @@ public class UserPersonal extends User implements Serializable{
     public UserPersonal(Horario horario, String name, String lastname, String phone, String age, String email, String foto, String qr) {
         super(name, lastname, phone, age, email, foto, qr);
         this.horario = horario;
-        //createCredentials();
+        createCredentials();
     }
     
     public void createCredentials() {
