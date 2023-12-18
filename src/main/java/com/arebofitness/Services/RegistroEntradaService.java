@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -49,6 +50,7 @@ public class RegistroEntradaService{
         throw new DataException("Datos del registro vacios");
     }
     
+    @Transactional
     public AllRegistrosDTO registroSalida(int id, RegistroEntrada reg) {
         Optional<RegistroEntrada> opcReg = rgEnRep.findById(id);
         if (opcReg.isPresent()) {
