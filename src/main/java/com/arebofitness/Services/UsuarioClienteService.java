@@ -82,7 +82,7 @@ public class UsuarioClienteService {
                 usrClRep.save(user);
                 usuarios.add(user.getId_usuario());
             }
-            Pago pay= new Pago(usuarios, usrPg.getF_inicio(),usrPg.getF_fin(), usrPg.getFechaPago(),
+            Pago pay= new Pago(usuarios, usrPg.getF_inicio(),usrPg.getF_fin(), usrPg.getF_inicio(),
                     usrPg.getComprobante(), plOpc.get().getCost(), usrOpc.get(), plOpc.get());
             pgRep.save(pay);
             return true;
@@ -107,5 +107,19 @@ public class UsuarioClienteService {
             return usrDto;
         }
         throw new DataException("No se encontro un usuario con el id: "+id);
+    }
+    
+    protected List<Boolean> validarUsers(ArrayList<String> usuarios){
+        List<Boolean> res=new ArrayList<>();
+        for (String id : usuarios) {
+            Optional<UserCliente> opcCl=usrClRep.findById(id);
+            if(opcCl.isPresent()){
+                res.add(Boolean.TRUE);
+            }
+            else{
+                res.add(Boolean.FALSE);
+            }
+        }
+        return res;
     }
 }

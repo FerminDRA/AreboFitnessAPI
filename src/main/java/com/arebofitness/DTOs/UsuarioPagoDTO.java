@@ -22,7 +22,7 @@ public class UsuarioPagoDTO {
     private int id_plan;
     private Date f_inicio;
     private Date f_fin;
-    private Timestamp fechaPago;
+    private Date fechaPago;
     private String comprobante;
 
 }

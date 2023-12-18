@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -39,7 +40,10 @@ public class PagoService {
     UsuarioPsnlRepository usrPrRep;
     @Autowired
     PlanRepository plnRep;
+    @Autowired
+    UsuarioClienteService usrClSer;
     
+    @Transactional
     public List<AllPagosDTO> allPagos(){
         List<Pago> pagos = pgRep.findAll();
         List<AllPagosDTO> allPg=new ArrayList<>();
@@ -134,15 +138,19 @@ public class PagoService {
     
     public PagoDTO createPago(PagoDTO pago){
         Optional<UserPersonal> opcUsr = usrPrRep.findById(pago.getId_usuario());
-        //Optional<Admin> opcAdm = admRep.findById(pago.getId_admin());
         Optional<Plan> opcPln = plnRep.findById(pago.getId_plan());
-        //Optional<Costo> opcCst = cstRep.findById(pago.getId_costo());
-
-        if (opcUsr.isPresent() &&opcPln.isPresent()) {
+        List<Boolean> resServ=usrClSer.validarUsers(pago.getUsuarios());
+        boolean res = resServ.stream().allMatch(valor -> valor);
+        if (opcUsr.isPresent() &&opcPln.isPresent() && res) {
+            for(String idUsr:pago.getUsuarios()){
+                Optional<UserCliente> opcUsrCL=usrRep.findById(idUsr);
+                UserCliente cliente=opcUsrCL.get();
+                cliente.setPlan(opcPln.get());
+                usrRep.save(cliente);
+            }
             Pago newPago = pgRep.save(new Pago(pago.getUsuarios(), pago.getF_inicio(),
-                    pago.getF_fin(), pago.getFechapago(), pago.getComprobante(),
+                    pago.getF_fin(), pago.getF_inicio(), pago.getComprobante(),
                     opcPln.get().getCost(), opcUsr.get(), opcPln.get()));
-            //PagoDTO pgDTO=getPagoById(newPago.getId_pago());
             pago.setId_pago(newPago.getId_pago());
             return pago;
         }

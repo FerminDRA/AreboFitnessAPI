@@ -5,8 +5,10 @@
 package com.arebofitness.DTOs;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import javax.persistence.Lob;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -39,11 +41,12 @@ public class AllPagosDTO {
     private String nombre;
     private String nm_plan;
     private String duracion;
-    private Timestamp fechaPago;
+    private Date fechaPago;
     private BigDecimal costo;
+    @Lob
     private String comprobante;
 
-    public AllPagosDTO(int id, String nombre, String nm_plan, String duracion, Timestamp fechaPago, BigDecimal costo,String comprobante) {
+    public AllPagosDTO(int id, String nombre, String nm_plan, String duracion, Date fechaPago, BigDecimal costo,String comprobante) {
         this.id = id;
         this.nombre = nombre;
         this.nm_plan = nm_plan;

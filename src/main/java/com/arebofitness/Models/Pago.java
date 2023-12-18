@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
@@ -41,7 +42,8 @@ public class Pago {
     @Column(name = "f_fin")
     private Date f_fin;
     @Column(name = "fecha_pago")
-    private Timestamp fechaPago;
+    private Date fechaPago;
+    @Lob
     @Column(name = "comprobante")
     private String comprobante;
     @Column(name = "monto_pago")
@@ -58,7 +60,7 @@ public class Pago {
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private Plan plan;
 
-    public Pago(ArrayList<String> usuarios, Date f_inicio, Date f_fin, Timestamp fechaPago, String comprobante, BigDecimal monto_pago, UserPersonal usuario, Plan plan) {
+    public Pago(ArrayList<String> usuarios, Date f_inicio, Date f_fin, Date fechaPago, String comprobante, BigDecimal monto_pago, UserPersonal usuario, Plan plan) {
         this.usuarios = usuarios;
         this.f_inicio = f_inicio;
         this.f_fin = f_fin;
