@@ -33,6 +33,10 @@ public class Plan {
     private String duration;
     @Column(name = "costo")
     private BigDecimal cost;
+    @Column(name = "maxmembers")
+    private int maxMember;
+    @Column(name = "days")
+    private int days;
     
     
 }

@@ -48,6 +48,8 @@ public class PlanService {
             plan.setName(pln.getName());
             plan.setDuration(pln.getDuration());
             plan.setCost(pln.getCost());
+            plan.setMaxMember(pln.getMaxMember());
+            plan.setDays(pln.getDays());
             //plnRep.deleteById(pln.getId_plan());
             return plnRep.save(pln);
         }
