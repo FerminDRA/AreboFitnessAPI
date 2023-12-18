@@ -4,8 +4,8 @@
  */
 package com.arebofitness.Services;
 
-import com.arebofitness.DTOs.AllUsersDTO;
 import com.arebofitness.DTOs.GetUsuarioDTO;
+import com.arebofitness.DTOs.UserDTO;
 import com.arebofitness.DTOs.UserListDTO;
 import com.arebofitness.DTOs.UsuarioPagoDTO;
 import com.arebofitness.Exceptions.DataException;
@@ -15,7 +15,6 @@ import com.arebofitness.Models.UserCliente;
 import com.arebofitness.Models.UserPersonal;
 import com.arebofitness.Models.ViewUsuarios;
 import com.arebofitness.Repositories.AllUsuariosRepository;
-import com.arebofitness.Repositories.HorarioRepository;
 import com.arebofitness.Repositories.PagoRepository;
 import com.arebofitness.Repositories.PlanRepository;
 import java.util.ArrayList;
@@ -37,8 +36,6 @@ public class UsuarioClienteService {
     @Autowired
     UsuarioCltRepository usrClRep;
     @Autowired
-    UsuarioPsnlRepository usrPrslRep;
-    @Autowired
     UsuarioPsnlRepository usrPrsRep;
     @Autowired
     AllUsuariosRepository allUsrRep;
@@ -46,23 +43,11 @@ public class UsuarioClienteService {
     PlanRepository plRep;
     @Autowired
     PagoRepository pgRep;
-    @Autowired
-    HorarioRepository hroRep;
 
-    
-    public List<AllUsersDTO> getAll() {
+    public List<ViewUsuarios> getAll() {
         List<ViewUsuarios> usuarios = allUsrRep.findAll();
         if(!usuarios.isEmpty()){
-            List<AllUsersDTO> users = new ArrayList<>();
-            for (ViewUsuarios usuario : usuarios) {
-                Optional<UserCliente> opcUsr = usrClRep.findById(usuario.getId_usuario());
-                if (!opcUsr.isEmpty()) {
-                    //Pago pg = pgRep.getPaymentByUserId(usuario.getId_usuario());
-                    users.add(new AllUsersDTO(usuario.getId(),usuario.getId_usuario(), usuario.getNombres(), usuario.getTelefono(),
-                            usuario.getNombreplan(),usuario.getDuracion(),usuario.getTermino(), usuario.getCosto()));
-                }
-            }
-            return users;
+            return usuarios;
         }
         else{
             throw new DataException("No hay usuarios");
@@ -77,7 +62,6 @@ public class UsuarioClienteService {
                     user.getAge(), user.getPhone(), user.getEmail(),user.getPlan().getName(),
                     user.getFoto(),user.getQr()
             );
-            //return new ResponseEntity<>(users, HttpStatus.OK);
             return usrDto;
         } else{
             throw new DataException("No se encontro el usuario con el id:"+id);
@@ -92,7 +76,7 @@ public class UsuarioClienteService {
         if (!usrPg.getUsers().isEmpty()&usrOpc.isPresent() & plOpc.isPresent()) {
         //if (!usrPg.getUsers().isEmpty() & plOpc.isPresent()) {
             for (UserListDTO usr : usrPg.getUsers()) {
-                UserCliente user = new UserCliente(plOpc.get(), usr.getNombre(), usr.getApellidos(),
+                UserCliente user = new UserCliente(usr.getId(),plOpc.get(), usr.getNombre(), usr.getApellidos(),
                         usr.getTelefono(), usr.getEdad(), usr.getCorreo(),
                         usr.getFoto(), usr.getQr());
                 usrClRep.save(user);
@@ -106,5 +90,22 @@ public class UsuarioClienteService {
         else{
             return false;
         }
+    }
+    
+    public UserDTO updateUser(String id,UserDTO usrDto){
+        Optional<UserCliente> opcUsr= usrClRep.findById(id);
+        if(opcUsr.isPresent()){
+            UserCliente usr=opcUsr.get();
+            usr.setName(usrDto.getNombres());
+            usr.setLastname(usrDto.getApellidos());
+            usr.setPhone(usrDto.getTelefono());
+            usr.setEmail(usrDto.getEmail());
+            usr.setQr(usrDto.getQr());
+            usr.setFoto(usrDto.getFoto());
+            usrClRep.save(usr);
+            usrDto.setId_usuario(id);
+            return usrDto;
+        }
+        throw new DataException("No se encontro un usuario con el id: "+id);
     }
 }

@@ -65,6 +65,17 @@ public class User implements Serializable {
         this.qr = qr;
         generateID();
     }
+    
+    public User(String id_usuario, String name, String lastname, String phone, String age, String email, String foto, String qr) {
+        this.id_usuario=id_usuario;
+        this.name = name;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.age = age;
+        this.email = email;
+        this.foto = foto;
+        this.qr = qr;
+    }
 
     public void createCredentials(String type) {
         CredentialsEntity c = new CredentialsEntity();

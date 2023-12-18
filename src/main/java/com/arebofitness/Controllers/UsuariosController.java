@@ -4,12 +4,12 @@
  */
 package com.arebofitness.Controllers;
 
-import com.arebofitness.DTOs.AllUsersDTO;
 import com.arebofitness.DTOs.GetUsuarioDTO;
-import com.arebofitness.DTOs.UserListDTO;
+import com.arebofitness.DTOs.UserDTO;
 import com.arebofitness.DTOs.UsuarioPagoDTO;
 import com.arebofitness.Exceptions.DataException;
 import com.arebofitness.Helpers.ApiResponseHelper;
+import com.arebofitness.Models.ViewUsuarios;
 import com.arebofitness.Services.UsuarioClienteService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +40,7 @@ public class UsuariosController {
     @GetMapping("/")
     public ResponseEntity<Object> getAllMembers() {
         try {
-            List<AllUsersDTO> users = usrServ.getAll();
+            List<ViewUsuarios> users = usrServ.getAll();
             return ApiResponseHelper.ok("All users",HttpStatus.OK, users);
         }catch (DataException e) {
             return ApiResponseHelper.error(e.getMessage(), HttpStatus.NO_CONTENT, null);
@@ -77,22 +78,16 @@ public class UsuariosController {
         }
     }
     
-//    
-//    @PutMapping("/")
-//    public ResponseEntity<Usuario> editUsuario(@RequestParam int id_user, @RequestBody Usuario user){
-//        //Verificar si se hace uso de DTO o el modelo
-//        Optional<Usuario> opc=usrRep.findById(id_user);
-//        if(opc.isPresent()){
-//           Usuario usr= opc.get();
-//           usr.setNombres(user.getNombres());
-//           usr.setTelefono(user.getTelefono());
-//           usr.setCorreo(user.getCorreo());
-//           usr.setFoto_perfil(usr.getFoto_perfil());
-//           return new ResponseEntity<>(usrRep.save(usr), HttpStatus.OK);
-//        }
-//        else{
-//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-//        }
-//        //return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
-//    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> editUsuario(@PathVariable("id") String id, @RequestBody UserDTO user){
+        try {
+            UserDTO usr=usrServ.updateUser(id, user);
+            return ApiResponseHelper.ok("Usuario actualizado", HttpStatus.OK, usr);
+        }catch (DataException e) {
+            return ApiResponseHelper.error(e.getMessage(), HttpStatus.NOT_ACCEPTABLE, null);
+        } catch (Exception e) {
+            return ApiResponseHelper.error("Error de peticion:"+e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
+    }
 }

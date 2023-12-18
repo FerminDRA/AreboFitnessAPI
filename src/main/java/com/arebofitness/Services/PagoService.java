@@ -141,7 +141,7 @@ public class PagoService {
         if (opcUsr.isPresent() &&opcPln.isPresent()) {
             Pago newPago = pgRep.save(new Pago(pago.getUsuarios(), pago.getF_inicio(),
                     pago.getF_fin(), pago.getFechapago(), pago.getComprobante(),
-                    pago.getMonto_pago(), opcUsr.get(), opcPln.get()));
+                    opcPln.get().getCost(), opcUsr.get(), opcPln.get()));
             //PagoDTO pgDTO=getPagoById(newPago.getId_pago());
             pago.setId_pago(newPago.getId_pago());
             return pago;

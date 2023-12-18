@@ -15,27 +15,25 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Data
-public class AllUsersDTO {
-    private int id;
+public class UserDTO {
     private String id_usuario;
     private String nombres;
+    private String apellidos;
     private String telefono;
-    private String nombreplan;
-    private String duracion;
-    private Date termino;
-    private BigDecimal costo;
+    private String email;
+    private String qr;
+    private String foto;
 
-    
-    public AllUsersDTO(int id,String id_usuario, String nombres, String telefono, String nombreplan, String periodo, Date termino, BigDecimal costo) {
-        this.id=id;
+    public UserDTO(String id_usuario, String nombres, String apellidos, String telefono, String email, String qr, String foto) {
         this.id_usuario = id_usuario;
         this.nombres = nombres;
+        this.apellidos = apellidos;
         this.telefono = telefono;
-        this.nombreplan = nombreplan;
-        this.duracion = periodo;
-        this.termino = termino;
-        this.costo = costo;
+        this.email = email;
+        this.qr = qr;
+        this.foto = foto;
     }
     
     
+
 }

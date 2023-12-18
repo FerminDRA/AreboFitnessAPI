@@ -29,8 +29,8 @@ public class UserCliente extends User{
 //        super(name, lastname, phone, age, email, foto, qr);
 //    }
 
-    public UserCliente(Plan plan, String name, String lastname, String phone, String age, String email, String foto, String qr) {
-        super(name, lastname, phone, age, email, foto, qr);
+    public UserCliente(String id_usuario,Plan plan, String name, String lastname, String phone, String age, String email, String foto, String qr) {
+        super(id_usuario,name, lastname, phone, age, email, foto, qr);
         this.plan = plan;
     }
 
