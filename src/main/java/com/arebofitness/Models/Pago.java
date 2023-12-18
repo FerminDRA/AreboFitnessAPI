@@ -47,7 +47,7 @@ public class Pago {
     @Column(name = "comprobante")
     private String comprobante;
     @Column(name = "monto_pago")
-    private BigDecimal monto_pago;
+    private Double monto_pago;
     
     //FKs
     @ManyToOne(fetch = FetchType.LAZY)
@@ -60,7 +60,7 @@ public class Pago {
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private Plan plan;
 
-    public Pago(ArrayList<String> usuarios, Date f_inicio, Date f_fin, Date fechaPago, String comprobante, BigDecimal monto_pago, UserPersonal usuario, Plan plan) {
+    public Pago(ArrayList<String> usuarios, Date f_inicio, Date f_fin, Date fechaPago, String comprobante, Double monto_pago, UserPersonal usuario, Plan plan) {
         this.usuarios = usuarios;
         this.f_inicio = f_inicio;
         this.f_fin = f_fin;

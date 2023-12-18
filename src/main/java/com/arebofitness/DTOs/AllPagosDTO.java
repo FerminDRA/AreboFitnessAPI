@@ -42,11 +42,11 @@ public class AllPagosDTO {
     private String nm_plan;
     private String duracion;
     private Date fechaPago;
-    private BigDecimal costo;
+    private Double costo;
     @Lob
     private String comprobante;
 
-    public AllPagosDTO(int id, String nombre, String nm_plan, String duracion, Date fechaPago, BigDecimal costo,String comprobante) {
+    public AllPagosDTO(int id, String nombre, String nm_plan, String duracion, Date fechaPago, Double costo,String comprobante) {
         this.id = id;
         this.nombre = nombre;
         this.nm_plan = nm_plan;

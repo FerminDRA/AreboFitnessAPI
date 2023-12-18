@@ -32,7 +32,7 @@ public class Plan {
     @Column(name = "duracion")
     private String duration;
     @Column(name = "costo")
-    private BigDecimal cost;
+    private Double cost;
     @Column(name = "maxmembers")
     private int maxMember;
     @Column(name = "days")

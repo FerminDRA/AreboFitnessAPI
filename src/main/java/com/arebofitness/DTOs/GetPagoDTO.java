@@ -23,14 +23,14 @@ public class GetPagoDTO {
     private int id_pago;
     private List<Map<String, String>> usuarios = new ArrayList<>();
     private String nmPlan;
-    private BigDecimal monto_pago;
+    private Double monto_pago;
     private Date fechapago;
     private String comprobante;
     
     //Get by id de pago
     //lista usuarios de pagos nombre e id, comprobante
 
-    public GetPagoDTO(int id_pago,List<Map<String, String>> usuarios, String nmPlan, BigDecimal monto_pago, Date fechapago, String comprobante) {
+    public GetPagoDTO(int id_pago,List<Map<String, String>> usuarios, String nmPlan, Double monto_pago, Date fechapago, String comprobante) {
         this.id_pago = id_pago;
         this.usuarios=usuarios;
         this.nmPlan = nmPlan;
