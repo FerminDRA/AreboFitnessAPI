@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
@@ -46,8 +47,10 @@ public class User implements Serializable {
     private String age;
     @Column(name = "email")
     private String email;
+    @Lob
     @Column(name = "foto")
     private String foto;
+    @Lob
     @Column(name = "qr")
     private String qr;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
