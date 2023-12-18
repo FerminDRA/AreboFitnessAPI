@@ -4,14 +4,18 @@
  */
 package com.arebofitness.Controllers;
 
+import com.arebofitness.DTOs.UserListDTO;
 import com.arebofitness.Exceptions.DataException;
 import com.arebofitness.Helpers.ApiResponseHelper;
 import com.arebofitness.Models.CredentialsEntity;
 import com.arebofitness.Repositories.CredentialsRepository;
+import com.arebofitness.Services.UsuarioPersonalService;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +27,15 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/arebofitness/login")
+@CrossOrigin(origins = "*")
 public class LoginController {
     @Autowired
     CredentialsRepository crdRep;
+    @Autowired
+    UsuarioPersonalService usrSer;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<Object> createHorario(@RequestBody CredentialsEntity loginRequest) {
         try {
             String email = loginRequest.getEmail();
@@ -36,8 +44,9 @@ public class LoginController {
             Optional<CredentialsEntity> personOptional = crdRep.findByUsernameAndPassword(email, password);
             if (personOptional.isPresent()) {
                 // Inicio de sesión exitoso
-                CredentialsEntity person = personOptional.get();
-                return ApiResponseHelper.ok("Login exitoso", HttpStatus.ACCEPTED, person);
+                UserListDTO usr=usrSer.getPersonalbyID(personOptional.get().getUser().getId_usuario());
+                //CredentialsEntity person = personOptional.get();
+                return ApiResponseHelper.ok("Login exitoso", HttpStatus.ACCEPTED, usr);
             } else {
                 // Credenciales incorrectas
                 return ApiResponseHelper.error("Login no autorizado", HttpStatus.UNAUTHORIZED, null);

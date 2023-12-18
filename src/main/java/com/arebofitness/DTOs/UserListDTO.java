@@ -23,8 +23,10 @@ public class UserListDTO {
     private String foto;
     private String qr;
     private String nombreHr;
+    private int cargo;
 
-    public UserListDTO(String id,String nombre, String apellidos, String edad, String telefono, String correo, String foto, String qr, String nombreHr) {
+    public UserListDTO(String id,String nombre, String apellidos, String edad, String telefono,
+            String correo, String foto, String qr, String nombreHr,int cargo) {
         this.id=id;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -34,6 +36,7 @@ public class UserListDTO {
         this.foto = foto;
         this.qr = qr;
         this.nombreHr = nombreHr;
+        this.cargo=cargo;
     }
     
     

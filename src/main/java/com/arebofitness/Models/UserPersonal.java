@@ -13,11 +13,14 @@ import lombok.*;
  *
  * @author zS20006736
  */
-@NoArgsConstructor()
+@Data
+@NoArgsConstructor
 @Entity
 @DiscriminatorValue("Personal")
 public class UserPersonal extends User implements Serializable{
 
+    @Column(name = "cargo")
+    private int cargo;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_horario")
@@ -28,23 +31,14 @@ public class UserPersonal extends User implements Serializable{
 //        super(name, lastname, phone, age, email, foto, qr);
 //    }
 
-    public UserPersonal(Horario horario, String name, String lastname, String phone, String age, String email, String foto, String qr) {
+    public UserPersonal(Horario horario, String name, String lastname, String phone, String age, String email, String foto, String qr, int cargo) {
         super(name, lastname, phone, age, email, foto, qr);
         this.horario = horario;
+        this.cargo=cargo;
         createCredentials();
     }
     
     public void createCredentials() {
         super.createCredentials("Personal");
     }
-
-    public Horario getHorario() {
-        return horario;
-    }
-
-    public void setHorario(Horario horario) {
-        this.horario = horario;
-    }
-
-    
 }

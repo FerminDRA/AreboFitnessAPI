@@ -33,7 +33,7 @@ public class UsuarioPersonalService{
             Horario hr=hrrOpc.get();
             UserPersonal user = new UserPersonal(hr, usrPg.getNombre(), usrPg.getApellidos(),
                 usrPg.getTelefono(), usrPg.getEdad(), usrPg.getCorreo(),
-                usrPg.getFoto(), usrPg.getQr());
+                usrPg.getFoto(), usrPg.getQr(),usrPg.getCargo());
             usrPrsl.save(user);
             return true;
         }
@@ -61,7 +61,7 @@ public class UsuarioPersonalService{
             UserPersonal psr=opcPers.get();
             UserListDTO personal= new UserListDTO(psr.getId_usuario(),psr.getName(), psr.getLastname(), psr.getAge(),
                     psr.getPhone(), psr.getEmail(), psr.getFoto(),
-                    psr.getQr(), psr.getHorario().getNombre());
+                    psr.getQr(), psr.getHorario().getNombre(),psr.getCargo());
             return personal;
         }
         else{
@@ -76,7 +76,7 @@ public class UsuarioPersonalService{
             for (UserPersonal psr : usrPrs) {
                 UserListDTO user= new UserListDTO(psr.getId_usuario(),psr.getName(), psr.getLastname(), psr.getAge(),
                     psr.getPhone(), psr.getEmail(), psr.getFoto(),
-                    psr.getQr(), psr.getHorario().getNombre());
+                    psr.getQr(), psr.getHorario().getNombre(),psr.getCargo());
                 personal.add(user);
             }
             return personal;
