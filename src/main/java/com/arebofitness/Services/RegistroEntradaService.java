@@ -12,6 +12,8 @@ import com.arebofitness.Repositories.AllRegistrosRepository;
 import com.arebofitness.Repositories.RegistroEntradaRepository;
 import com.arebofitness.Repositories.UsuarioCltRepository;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +43,7 @@ public class RegistroEntradaService{
             ));
             AllRegistrosDTO register= new AllRegistrosDTO(registro.getId_registro(),
                     registro.getUsuario().getId_usuario(), registro.getUsuario().getName(),
-                    registro.getH_entrada(), registro.getH_salida());
+                    registro.getH_entrada(), registro.getH_salida(),registro.getFecha());
             return register;
         }
         throw new DataException("Datos del registro vacios");
@@ -55,7 +57,7 @@ public class RegistroEntradaService{
             rgEnRep.save(registro);
             AllRegistrosDTO register= new AllRegistrosDTO(registro.getId_registro(),
                     registro.getUsuario().getId_usuario(), registro.getUsuario().getName(),
-                    registro.getH_entrada(), registro.getH_salida());
+                    registro.getH_entrada(), registro.getH_salida(),registro.getFecha());
             return register;
         }
         throw new DataException("No existe el registro con el id: "+id);
@@ -92,18 +94,10 @@ public class RegistroEntradaService{
     }
     
     public List<AllRegistrosDTO> getAllByFecha(Date fecha) {
-        List<RegistroEntrada> registros=rgEnRep.findAllByFecha(fecha);
+        List<AllRegistrosDTO> registros=allRgEnRep.findAllByFecha(fecha);
         if(!registros.isEmpty()){
-            List<AllRegistrosDTO> reg= new ArrayList<>();
-            for (RegistroEntrada registro : registros) {
-                AllRegistrosDTO register= new AllRegistrosDTO(registro.getId_registro(),
-                        registro.getUsuario().getId_usuario(), registro.getUsuario().getName(),
-                        registro.getH_entrada(), registro.getH_salida());
-                reg.add(register);
-            }
-            return reg;
+            return registros;
         }
         throw new DataException("No hay registros");
     }
-    
 }

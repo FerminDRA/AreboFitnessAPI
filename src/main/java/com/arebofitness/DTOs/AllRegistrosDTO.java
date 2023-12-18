@@ -4,6 +4,7 @@
  */
 package com.arebofitness.DTOs;
 
+import java.sql.Date;
 import java.sql.Time;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,13 +28,15 @@ public class AllRegistrosDTO {
     private String nombres;
     private Time hora_entrada;
     private Time hora_salida;
+    private Date fecha;
 
-    public AllRegistrosDTO(int id_reg, String id_usuario, String nombres, Time hora_entrada, Time hora_salida) {
+    public AllRegistrosDTO(int id_reg, String id_usuario, String nombres, Time hora_entrada, Time hora_salida, Date fecha) {
         this.id_reg = id_reg;
         this.id_usuario = id_usuario;
         this.nombres = nombres;
         this.hora_entrada = hora_entrada;
         this.hora_salida = hora_salida;
+        this.fecha=fecha;
     }
 
     

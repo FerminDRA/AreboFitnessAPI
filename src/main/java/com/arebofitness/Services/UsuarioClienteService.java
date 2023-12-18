@@ -100,10 +100,10 @@ public class UsuarioClienteService {
             usr.setLastname(usrDto.getApellidos());
             usr.setPhone(usrDto.getTelefono());
             usr.setEmail(usrDto.getEmail());
-            usr.setQr(usrDto.getQr());
             usr.setFoto(usrDto.getFoto());
             usrClRep.save(usr);
             usrDto.setId_usuario(id);
+            usrDto.setQr(usr.getQr());
             return usrDto;
         }
         throw new DataException("No se encontro un usuario con el id: "+id);
